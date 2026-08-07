@@ -1,65 +1,23 @@
 # Sahseh Source
 
-Source-of-truth repo for Sahseh menu data and shared visual assets.
-
-This repo should be edited before the static menu or ordering app when changing menu content, product images, icons, logo, background, prices, ingredients, or visibility.
+Sahseh Source is the canonical repository for Sahseh menu data and shared visual assets. The two application repositories consume deploy copies from this repository.
 
 ## Contents
 
-- data/menu.json - canonical category and product data.
-- assets/brand/brand-art.png - canonical Sahseh logo.
-- assets/beauty/background-pattern.svg - shared decorative background.
-- assets/beauty/icons/ - shared category and section icons.
-- assets/img/products/ - future product images.
-- tools/Sync-Apps.ps1 - copies deploy-ready data/assets into app repos.
-- tools/Validate-MenuRepos.ps1 - validates source data/assets and app deploy copies.
+- `data/menu.json`: canonical categories, products, prices, availability, images, and ingredients.
+- `assets/brand/`: canonical Sahseh brand images.
+- `assets/beauty/`: shared background and category icons.
+- `assets/img/products/`: product-image source directory.
+- `tools/`: synchronization and validation utilities.
 
-## Expected Sibling Folders
+## How It Works
 
-This repo expects app repos next to it:
+Menu and shared asset changes are made here first, then synchronized into `sahseh_menu` and `sahseh_ordering`. The validation process checks the source data, deploy copies, fallback static HTML, asset consistency, category/product counts, and price slots.
 
-```text
-FILES/menu/
-  sahseh_source/
-  sahseh_menu/
-  sahseh_ordering/
-```
+## Editing Rule
 
-`sahseh_ordering` can be empty until the ordering app is built.
+Treat this repository as the source of truth. Do not make normal menu or shared-asset changes directly in an application repository. Product images should use paths relative to the deployed app root, and product ingredients belong on the product records in `data/menu.json`.
 
-## Workflow
+## Current Scope
 
-Edit canonical files here first, then sync app deploy copies:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\sahseh_source\tools\Sync-Apps.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File .\sahseh_source\tools\Validate-MenuRepos.ps1
-```
-
-The static menu and future ordering app need deploy copies because each hosted site can only serve files included in that app repo or fetched from public URLs.
-
-## Product Images
-
-Put future product images in:
-
-```text
-assets/img/products/
-```
-
-Use paths in `data/menu.json` relative to the deployed app root, for example:
-
-```json
-"image": "assets/img/products/mojito-001.webp"
-```
-
-Prefer WebP images around 800x600 or 900x600, ideally 50KB to 150KB when possible.
-
-## Ingredients
-
-Ingredients belong directly in `data/menu.json` on each product:
-
-```json
-"ingredients": "نعنع، ليمون، سفن أب، ثلج"
-```
-
-Use `null` when ingredients are not available yet.
+The source currently supports the static QR menu and the ordering frontend. Backend, database, restaurant dashboard, and delivery operations are outside this repository’s current scope.

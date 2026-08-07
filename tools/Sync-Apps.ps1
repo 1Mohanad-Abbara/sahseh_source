@@ -17,8 +17,8 @@ foreach ($Category in @($Menu.categories)) {
   $ProductCount += @($Category.products).Count
 }
 
-if ($CategoryCount -ne 13 -or $ProductCount -ne 103) {
-  throw "Source menu data has $CategoryCount categories and $ProductCount products; expected 13 categories and 103 products."
+if ($CategoryCount -ne 13 -or $ProductCount -ne 104) {
+  throw "Source menu data has $CategoryCount categories and $ProductCount products; expected 13 categories and 104 products."
 }
 
 function Copy-RequiredFile {
@@ -54,7 +54,7 @@ if (-not (Test-Path -LiteralPath $StaticRoot)) {
 }
 
 Copy-RequiredFile $SourceDataPath (Join-Path $StaticRoot "data\menu.json")
-Copy-RequiredFile (Join-Path $SourceRoot "assets\brand\brand-art.png") (Join-Path $StaticRoot "assets\brand\brand-art.png")
+Copy-RequiredDirectoryContents (Join-Path $SourceRoot "assets\brand") (Join-Path $StaticRoot "assets\brand")
 Copy-RequiredDirectoryContents (Join-Path $SourceRoot "assets\beauty") (Join-Path $StaticRoot "assets\beauty")
 New-Item -ItemType Directory -Force -Path (Join-Path $StaticRoot "assets\img\products") | Out-Null
 if ((Get-ChildItem -LiteralPath (Join-Path $SourceRoot "assets\img\products") -File -ErrorAction SilentlyContinue | Measure-Object).Count -gt 0) {
@@ -66,7 +66,7 @@ $OrderingPackage = Join-Path $OrderingRoot "package.json"
 $OrderingPublic = Join-Path $OrderingRoot "public"
 if ((Test-Path -LiteralPath $OrderingPackage) -or (Test-Path -LiteralPath $OrderingPublic)) {
   Copy-RequiredFile $SourceDataPath (Join-Path $OrderingRoot "public\data\menu.json")
-  Copy-RequiredFile (Join-Path $SourceRoot "assets\brand\brand-art.png") (Join-Path $OrderingRoot "public\assets\brand\brand-art.png")
+  Copy-RequiredDirectoryContents (Join-Path $SourceRoot "assets\brand") (Join-Path $OrderingRoot "public\assets\brand")
   Copy-RequiredDirectoryContents (Join-Path $SourceRoot "assets\beauty") (Join-Path $OrderingRoot "public\assets\beauty")
   New-Item -ItemType Directory -Force -Path (Join-Path $OrderingRoot "public\assets\img\products") | Out-Null
   if ((Get-ChildItem -LiteralPath (Join-Path $SourceRoot "assets\img\products") -File -ErrorAction SilentlyContinue | Measure-Object).Count -gt 0) {

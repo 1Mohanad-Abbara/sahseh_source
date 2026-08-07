@@ -88,6 +88,25 @@ if (-not (Test-Path -LiteralPath $OrderingRoot)) {
   Add-ValidationError "Ordering folder is missing: $OrderingRoot"
 }
 
+$SharedRelativePaths = [System.Collections.Generic.List[string]]::new()
+$SharedRelativePaths.Add("data\menu.json") | Out-Null
+foreach ($SharedDirectory in @("assets\brand", "assets\beauty", "assets\img\products")) {
+  $SharedSourceDirectory = Join-Path $SourceRoot $SharedDirectory
+  if (Test-Path -LiteralPath $SharedSourceDirectory) {
+    Get-ChildItem -LiteralPath $SharedSourceDirectory -Recurse -File | ForEach-Object {
+      $SharedRelativePaths.Add($_.FullName.Substring($SourceRoot.Length + 1)) | Out-Null
+    }
+  }
+}
+
+foreach ($SharedRelativePath in @($SharedRelativePaths | Sort-Object -Unique)) {
+  Test-SameFileHash (Join-Path $SourceRoot $SharedRelativePath) (Join-Path $StaticRoot $SharedRelativePath) "Static shared copy $SharedRelativePath"
+
+  if (Test-Path -LiteralPath $OrderingRoot) {
+    Test-SameFileHash (Join-Path $SourceRoot $SharedRelativePath) (Join-Path $OrderingRoot (Join-Path "public" $SharedRelativePath)) "Ordering shared copy $SharedRelativePath"
+  }
+}
+
 if ($Categories.Count -ne 13) {
   Add-ValidationError "Expected 13 categories in source data, found $($Categories.Count)."
 }
@@ -177,8 +196,8 @@ for ($CategoryIndex = 0; $CategoryIndex -lt $Categories.Count; $CategoryIndex++)
     } else {
       $PriceCount++
 
-      if ($Product.priceText -notmatch '^\d+\.\d{2}$') {
-        Add-ValidationError "Product '$($Product.id)' priceText '$($Product.priceText)' is not formatted as 0.00."
+      if ($Product.priceText -notmatch '^\d+$') {
+        Add-ValidationError "Product '$($Product.id)' priceText '$($Product.priceText)' is not formatted as a whole-number price."
       }
 
       if ([decimal]$Product.price -ne [decimal]$Product.priceText) {
@@ -202,12 +221,12 @@ for ($CategoryIndex = 0; $CategoryIndex -lt $Categories.Count; $CategoryIndex++)
   }
 }
 
-if ($ProductCount -ne 103) {
-  Add-ValidationError "Expected 103 products in source data, found $ProductCount."
+if ($ProductCount -ne 104) {
+  Add-ValidationError "Expected 104 products in source data, found $ProductCount."
 }
 
-if ($PriceCount -ne 103) {
-  Add-ValidationError "Expected 103 price slots in source data, found $PriceCount."
+if ($PriceCount -ne 104) {
+  Add-ValidationError "Expected 104 price slots in source data, found $PriceCount."
 }
 
 $NavMatches = [regex]::Matches($Html, '<a href="#([^"]+)"><img src="([^"]+)"[^>]*><span class="nav-label">([\s\S]*?)</span></a>')
@@ -298,4 +317,4 @@ if ($Errors.Count -gt 0) {
   exit 1
 }
 
-Write-Host "Source/static split validation passed: source data/assets, static deploy copies, fallback HTML, 13 categories, 103 products, 103 prices."
+Write-Host "Source/app split validation passed: source data/assets, app deploy copies, fallback HTML, 13 categories, 104 products, 104 prices."
