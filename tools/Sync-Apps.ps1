@@ -17,8 +17,8 @@ foreach ($Category in @($Menu.categories)) {
   $ProductCount += @($Category.products).Count
 }
 
-if ($CategoryCount -ne 13 -or $ProductCount -ne 104) {
-  throw "Source menu data has $CategoryCount categories and $ProductCount products; expected 13 categories and 104 products."
+if ($CategoryCount -ne 13 -or $ProductCount -ne 105) {
+  throw "Source menu data has $CategoryCount categories and $ProductCount products; expected 13 categories and 105 products."
 }
 
 function Copy-RequiredFile {

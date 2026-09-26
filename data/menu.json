@@ -1201,6 +1201,18 @@
           "available": true,
           "visibleInDineIn": true,
           "visibleInOrdering": true
+        },
+        {
+          "id": "crepe-011",
+          "name": "كريب صَح سِح ميكس",
+          "price": 750,
+          "priceText": "750",
+          "order": 11,
+          "image": null,
+          "ingredients": null,
+          "available": true,
+          "visibleInDineIn": true,
+          "visibleInOrdering": true
         }
       ]
     },

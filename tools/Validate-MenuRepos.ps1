@@ -221,12 +221,12 @@ for ($CategoryIndex = 0; $CategoryIndex -lt $Categories.Count; $CategoryIndex++)
   }
 }
 
-if ($ProductCount -ne 104) {
-  Add-ValidationError "Expected 104 products in source data, found $ProductCount."
+if ($ProductCount -ne 105) {
+  Add-ValidationError "Expected 105 products in source data, found $ProductCount."
 }
 
-if ($PriceCount -ne 104) {
-  Add-ValidationError "Expected 104 price slots in source data, found $PriceCount."
+if ($PriceCount -ne 105) {
+  Add-ValidationError "Expected 105 price slots in source data, found $PriceCount."
 }
 
 $NavMatches = [regex]::Matches($Html, '<a href="#([^"]+)"><img src="([^"]+)"[^>]*><span class="nav-label">([\s\S]*?)</span></a>')
@@ -317,4 +317,4 @@ if ($Errors.Count -gt 0) {
   exit 1
 }
 
-Write-Host "Source/app split validation passed: source data/assets, app deploy copies, fallback HTML, 13 categories, 104 products, 104 prices."
+Write-Host "Source/app split validation passed: source data/assets, app deploy copies, fallback HTML, 13 categories, 105 products, 105 prices."

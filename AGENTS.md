@@ -68,7 +68,7 @@ Use `null` when ingredients are not available yet.
 
 - This repository is the editable source of truth. Normal menu, price, availability, ingredient, image, icon, brand, and background changes start here and are synchronized into both app repositories.
 - Deploy copies are `sahseh_menu/data/menu.json`, `sahseh_ordering/public/data/menu.json`, and the corresponding shared asset directories. QR assets are owned by `sahseh_menu` and are not synchronized into the other repositories.
-- Current menu expectations are 13 categories, 104 products, 104 whole-number price slots, and no empty price slots. `priceText` must match numeric `price` and use the current whole-number display format.
+- Current menu expectations are 13 categories, 105 products, 105 whole-number price slots, and no empty price slots. `priceText` must match numeric `price` and use the current whole-number display format.
 - Keep category order, section identifiers, icon mappings, Arabic RTL text, manually adjusted product order, prices, and visibility intact unless the user explicitly requests a change.
 - Product image paths remain relative to the deployed app root and product images belong under `assets/img/products/`. Prefer practical WebP dimensions and file sizes.
 - Ingredients belong directly on each product record. Use `null` when ingredients are not available.
